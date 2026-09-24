@@ -1,0 +1,42 @@
+<footer class="site-footer" data-site-footer>
+  <div class="site-footer__inner shell">
+    <section class="site-footer__identity" aria-label="Portfolio information">
+      <a class="wordmark" href="{% url 'portfolio:home' %}" aria-label="{{ site_settings.site_name|default:'Portfolio' }} home">
+        <span class="wordmark__mark">/</span>{{ global_profile.full_name|default:site_settings.site_name|default:'Portfolio' }}
+      </a>
+      {% if global_profile.professional_title %}<p class="site-footer__title">{{ global_profile.professional_title }}</p>{% endif %}
+      {% if global_profile.hero_supporting_text or global_profile.hero_statement %}<p class="site-footer__summary">{{ global_profile.hero_supporting_text|default:global_profile.hero_statement }}</p>{% endif %}
+      {% if social_links %}
+        <ul class="site-footer__socials" aria-label="Social profiles">
+          {% for social in social_links %}<li><a href="{{ social.url }}" target="_blank" rel="noopener noreferrer">{{ social.label }}<span class="sr-only"> (opens in a new tab)</span></a></li>{% endfor %}
+        </ul>
+      {% endif %}
+    </section>
+
+    {% if footer_navigation %}
+    <nav class="site-footer__column" aria-label="Footer navigation">
+      <p class="site-footer__label">Navigation</p>
+      <ul>
+        {% for item in footer_navigation %}
+          <li><a href="{% url 'portfolio:home' %}{% if item.fragment %}#{{ item.fragment }}{% endif %}">{{ item.label }}</a></li>
+        {% endfor %}
+      </ul>
+    </nav>
+    {% endif %}
+
+    {% if footer_services %}
+    <section class="site-footer__column" aria-labelledby="footer-expertise-heading">
+      <p class="site-footer__label" id="footer-expertise-heading">Expertise</p>
+      <ul>{% for service in footer_services %}<li>{{ service.title }}</li>{% endfor %}</ul>
+    </section>
+    {% endif %}
+
+    {% if site_settings.contact_email %}
+    <section class="site-footer__column" aria-labelledby="footer-contact-heading">
+      <p class="site-footer__label" id="footer-contact-heading">Contact</p>
+      <a class="site-footer__email" href="mailto:{{ site_settings.contact_email }}">{{ site_settings.contact_email }}</a>
+    </section>
+    {% endif %}
+  </div>
+  <div class="site-footer__bottom shell"><span>© {% now 'Y' %} {{ global_profile.full_name|default:site_settings.site_name|default:'Portfolio' }}</span><span>All rights reserved.</span></div>
+</footer>

@@ -1,0 +1,7 @@
+{% extends 'dashboard/base.html' %}
+{% block title %}Dashboard — {{ site_settings.site_name|default:'Portfolio' }}{% endblock %}
+{% block dashboard_content %}
+<div class="dashboard-heading"><div><p class="eyebrow">Content workspace</p><h1>Good to see you.</h1><p>Manage the public portfolio with a clear view of what is live.</p></div>{% if perms.portfolio.manage_profile %}<a class="button" href="{% url 'dashboard:profile' %}">Edit profile</a>{% endif %}</div>
+<section class="metric-grid" aria-label="Content overview">{% for counter in counters %}<a class="metric" href="{% url 'dashboard:content-list' counter.key %}"><span>{{ counter.label }}</span><strong>{{ counter.count }}</strong><small>Manage →</small></a>{% endfor %}</section>
+<section class="dashboard-panel dashboard-panel--note"><div><p class="eyebrow">Publishing note</p><h2>Only published projects appear publicly.</h2><p>Drafts remain private. Every content change is protected by your assigned server-side permissions.</p></div><dl><div><dt>Published projects</dt><dd>{{ published_projects }}</dd></div>{% if new_messages != None %}<div><dt>New messages</dt><dd>{{ new_messages }}</dd></div>{% endif %}</dl></section>
+{% endblock %}

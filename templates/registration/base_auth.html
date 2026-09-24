@@ -1,0 +1,5 @@
+{% extends 'base.html' %}
+{% block body_class %}auth-page{% endblock %}
+{% block body %}
+<main class="auth-layout" id="main-content"><a class="wordmark" href="{% url 'portfolio:home' %}"><span class="wordmark__mark">/</span>{{ site_settings.site_name|default:'Portfolio' }}</a><section class="auth-card">{% block auth_content %}{% endblock %}</section></main>
+{% endblock %}

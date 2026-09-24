@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block title %}{{ project.title }} — {{ site_settings.site_name|default:'Portfolio' }}{% endblock %}
+{% block meta_description %}{{ project.summary }}{% endblock %}
+{% block og_title %}{{ project.title }}{% endblock %}
+{% block body_class %}public-page project-page{% endblock %}
+{% block body %}
+{% include 'components/public_nav.html' %}
+<main id="main-content">
+  <article>
+    <header class="case-hero shell" data-reveal>
+      <a class="back-link" href="{% url 'portfolio:home' %}#projects">← Back to selected work</a>
+      <p class="eyebrow">{% if project.category %}{{ project.category.name }}{% else %}Case study{% endif %} / {{ project.year|default:'—' }}</p>
+      <h1>{{ project.title }}</h1>
+      <p class="case-hero__summary">{{ project.summary }}</p>
+      <div class="case-hero__meta"><span>{% if project.role %}{{ project.role }}{% else %}Independent project{% endif %}</span><div class="tag-list">{% for technology in project.technologies.all %}<span>{{ technology.name }}</span>{% endfor %}</div></div>
+      <div class="case-actions">{% if project.live_url %}<a class="button" href="{{ project.live_url }}" target="_blank" rel="noopener noreferrer">Visit project <span aria-hidden="true">↗</span></a>{% endif %}{% if project.github_url %}<a class="text-link" href="{{ project.github_url }}" target="_blank" rel="noopener noreferrer">View source <span aria-hidden="true">↗</span></a>{% endif %}</div>
+    </header>
+    {% if project.images.all %}
+    <section class="case-images shell" aria-label="Project images">
+      {% for image in project.images.all %}<figure data-reveal><img src="{{ image.image.url }}" alt="{{ image.alt_text }}" width="1400" height="930" loading="{% if forloop.first %}eager{% else %}lazy{% endif %}">{% if image.caption %}<figcaption>{{ image.caption }}</figcaption>{% endif %}</figure>{% endfor %}
+    </section>
+    {% endif %}
+    <section class="case-narrative shell">
+      {% if project.problem %}<div data-reveal><p class="section-index">The problem</p><h2>{{ project.problem|linebreaksbr }}</h2></div>{% endif %}
+      {% if project.solution %}<div data-reveal><p class="section-index">The response</p><div class="case-copy">{{ project.solution|linebreaks }}</div></div>{% endif %}
+      {% if project.features %}<div data-reveal><p class="section-index">What it includes</p><div class="case-copy">{{ project.features|linebreaks }}</div></div>{% endif %}
+      {% if project.challenges %}<div data-reveal><p class="section-index">Engineering considerations</p><div class="case-copy">{{ project.challenges|linebreaks }}</div></div>{% endif %}
+      {% if project.results %}<div data-reveal><p class="section-index">Outcome</p><div class="case-copy">{{ project.results|linebreaks }}</div></div>{% endif %}
+    </section>
+  </article>
+</main>
+{% include 'components/public_footer.html' %}
+{% endblock %}

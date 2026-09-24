@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: collins-portfolio
+    runtime: python
+    buildCommand: "pip install -r requirements/production.txt && python manage.py collectstatic --noinput"
+    startCommand: "python manage.py migrate && gunicorn config.wsgi:application"
+    envVars:
+      - key: DJANGO_SETTINGS_MODULE
+        value: config.settings.production
+      - key: PYTHON_VERSION
+        value: 3.13

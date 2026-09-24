@@ -1,0 +1,30 @@
+{% load static schema %}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <link rel="icon" href="{% static 'images/favicon.svg' %}" type="image/svg+xml">
+  <meta name="description" content="{% block meta_description %}{{ site_settings.default_meta_description|default:'A software engineering portfolio.' }}{% endblock %}">
+  <link rel="canonical" href="{{ request.build_absolute_uri }}">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="{% block og_title %}{{ site_settings.default_meta_title|default:site_settings.site_name|default:'Portfolio' }}{% endblock %}">
+  <meta property="og:description" content="{% block og_description %}{{ site_settings.default_meta_description|default:'A software engineering portfolio.' }}{% endblock %}">
+  {% if site_settings.og_image %}<meta property="og:image" content="{{ site_settings.og_image.url }}">{% endif %}
+  <meta name="twitter:card" content="summary_large_image">
+  <title>{% block title %}{{ site_settings.default_meta_title|default:site_settings.site_name|default:'Portfolio' }}{% endblock %}</title>
+  <link rel="stylesheet" href="{% static 'css/site.css' %}">
+  {% json_ld schema_data request.csp_nonce %}
+  {% block extra_head %}{% endblock %}
+</head>
+<body class="{% block body_class %}{% endblock %}">
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  {% include 'components/messages.html' %}
+  {% block body %}{% endblock %}
+  <script src="{% static 'vendor/gsap.min.js' %}" defer></script>
+  <script src="{% static 'vendor/ScrollTrigger.min.js' %}" defer></script>
+  <script src="{% static 'js/site.js' %}" defer></script>
+  {% block extra_js %}{% endblock %}
+</body>
+</html>

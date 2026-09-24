@@ -1,0 +1,3 @@
+{% extends 'base.html' %}
+{% block body_class %}error-page{% endblock %}
+{% block body %}<main class="error-layout shell" id="main-content"><p class="eyebrow">500 / Unexpected error</p><h1>Something went wrong on our side.</h1><p>Please try again shortly.</p><a class="button" href="{% url 'portfolio:home' %}">Return home</a></main>{% endblock %}

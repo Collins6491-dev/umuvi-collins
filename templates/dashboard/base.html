@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% load dashboard %}
+{% block body_class %}dashboard-page{% endblock %}
+{% block body %}
+<div class="dashboard-layout">
+  <aside class="dashboard-sidebar" id="dashboard-sidebar" data-dashboard-sidebar>
+    <button class="dashboard-menu-close" type="button" data-dashboard-menu-close aria-label="Close dashboard menu">
+      <span class="sr-only">Close dashboard menu</span><span aria-hidden="true"></span><span aria-hidden="true"></span>
+    </button>
+    <a class="wordmark wordmark--dashboard" href="{% url 'dashboard:overview' %}"><span class="wordmark__mark">/</span> Studio</a>
+    <nav aria-label="Dashboard navigation">
+      <a href="{% url 'dashboard:overview' %}">Overview</a>
+      {% if perms.portfolio.manage_profile %}<a href="{% url 'dashboard:profile' %}">Profile</a>{% endif %}
+      <p class="dashboard-nav-label">Content</p>
+      {% for nav_spec in content_specs %}<a href="{% url 'dashboard:content-list' nav_spec.key %}">{{ nav_spec.label }}</a>{% endfor %}
+      {% if perms.core.change_sitesettings %}<p class="dashboard-nav-label">System</p><a href="{% url 'dashboard:settings' %}">Site settings</a>{% endif %}
+    </nav>
+    <div class="dashboard-sidebar__bottom"><a href="{% url 'portfolio:home' %}" target="_blank" rel="noopener">View website ↗</a></div>
+  </aside>
+  <div class="dashboard-menu-overlay" aria-hidden="true" data-dashboard-menu-overlay></div>
+  <div class="dashboard-main">
+    <header class="dashboard-header">
+      <button class="dashboard-menu-button" type="button" data-dashboard-menu aria-expanded="false" aria-controls="dashboard-sidebar" aria-label="Open dashboard menu">
+        <span class="sr-only" data-dashboard-menu-label>Open dashboard menu</span><span aria-hidden="true"></span><span aria-hidden="true"></span>
+      </button>
+      <div class="dashboard-account">
+        <span class="dashboard-account__avatar" aria-hidden="true">{{ request.user.get_full_name|default:request.user.username|first|upper }}</span>
+        <p><span class="dashboard-account__label">Signed in as</span> <strong>{{ request.user.get_full_name|default:request.user.username }}</strong></p>
+        <form method="post" action="{% url 'accounts:logout' %}" data-loading-form>{% csrf_token %}<button class="dashboard-logout" type="submit" data-loading-text="Signing out…">Log out</button></form>
+      </div>
+    </header>
+    <main class="dashboard-content" id="main-content">{% block dashboard_content %}{% endblock %}</main>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,3 @@
+{% extends 'base.html' %}
+{% block body_class %}error-page{% endblock %}
+{% block body %}<main class="error-layout shell" id="main-content"><p class="eyebrow">400 / Invalid request</p><h1>That request could not be understood.</h1><a class="button" href="{% url 'portfolio:home' %}">Return home</a></main>{% endblock %}

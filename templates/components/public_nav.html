@@ -1,0 +1,23 @@
+<header class="site-header" data-site-header>
+  <nav class="site-nav shell" aria-label="Primary navigation">
+    <a class="wordmark" href="{% url 'portfolio:home' %}" aria-label="{{ site_settings.site_name|default:'Portfolio' }} home">
+      <span class="wordmark__mark">/</span>{{ global_profile.full_name|default:site_settings.site_name|default:'Portfolio' }}
+    </a>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="primary-menu" aria-label="Open navigation" data-nav-toggle>
+      <span class="sr-only" data-nav-toggle-label>Open navigation</span><span></span><span></span>
+    </button>
+    <div class="nav-panel" id="primary-menu" data-nav-panel>
+      <div class="nav-panel__header" aria-hidden="true"><span class="wordmark"><span class="wordmark__mark">/</span>{{ global_profile.full_name|default:site_settings.site_name|default:'Portfolio' }}</span></div>
+      <div class="nav-links">
+        <a href="{% url 'portfolio:home' %}#about" data-section-link="about">About</a>
+        <a href="{% url 'portfolio:home' %}#projects" data-section-link="projects">Work</a>
+        <a href="{% url 'portfolio:home' %}#experience" data-section-link="experience">Experience</a>
+      </div>
+      <div class="nav-actions">
+        {% if global_profile.resume %}<a class="text-link" href="{% url 'portfolio:download-resume' %}">Resume <span aria-hidden="true">↓</span></a>{% endif %}
+        <a class="button button--small" href="{% url 'portfolio:home' %}#contact">Let’s talk</a>
+      </div>
+    </div>
+    <div class="nav-overlay" aria-hidden="true" data-nav-overlay></div>
+  </nav>
+</header>
