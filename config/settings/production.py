@@ -2,15 +2,20 @@ from urllib.parse import urlparse
 
 from .base import *  # noqa: F403
 
+
 DEBUG = False
+
 
 if SECRET_KEY.startswith("unsafe-"):  # noqa: F405
     raise RuntimeError("SECRET_KEY must be set to a secure value in production.")
 
+
 if not ALLOWED_HOSTS:  # noqa: F405
     raise RuntimeError("ALLOWED_HOSTS must be configured in production.")
 
+
 site_url = urlparse(SITE_URL)  # noqa: F405
+
 if (
     site_url.scheme != "https"
     or not site_url.hostname
@@ -22,17 +27,28 @@ if (
 ):
     raise RuntimeError("SITE_URL must be the public HTTPS origin in production.")
 
-# Serve collectstatic output from the application in production. This must sit
-# directly after SecurityMiddleware, before the remaining middleware.
+
+# Serve collected static files efficiently in production.
+# WhiteNoise must be placed directly after SecurityMiddleware.
 MIDDLEWARE.insert(1, "whitenoise.middleware.WhiteNoiseMiddleware")  # noqa: F405
+
+
 STORAGES = {
     "staticfiles": {
         "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
     },
 }
 
+# Prevent a missing manifest entry from causing a production 500 error.
+WHITENOISE_MANIFEST_STRICT = False
+
+
+# Production must use a real SMTP email backend.
 if EMAIL_BACKEND != "django.core.mail.backends.smtp.EmailBackend":  # noqa: F405
-    raise RuntimeError("Production email must use Django's SMTP email backend.")
+    raise RuntimeError(
+        "Production email must use Django's SMTP email backend."
+    )
+
 
 missing_smtp_settings = [
     name
@@ -44,7 +60,10 @@ missing_smtp_settings = [
     }.items()
     if not value
 ]
+
+
 if missing_smtp_settings:
     raise RuntimeError(
-        "Missing production SMTP settings: " + ", ".join(missing_smtp_settings)
+        "Missing production SMTP settings: "
+        + ", ".join(missing_smtp_settings)
     )
